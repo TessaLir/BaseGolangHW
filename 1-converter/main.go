@@ -10,5 +10,17 @@ func main() {
 		EURtoRUB = (USDtoRUB / USDtoEUR) * EURtoUSD
 	)
 
+	data := GetUserData()
+	fmt.Println(data)
+
 	fmt.Print(EURtoRUB)
+}
+
+func GetUserData() (data string) {
+	fmt.Scan(&data)
+	return
+}
+
+func calculateIMT(coin int, currencySource string, currencyTarget string) {
+
 }

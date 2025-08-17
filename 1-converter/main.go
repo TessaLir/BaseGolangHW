@@ -52,7 +52,7 @@ func GetUserCurrencyData() (data string, err error) {
 
 	fmt.Scan(&data)
 
-	if data == firstCurrency {
+	if firstCurrency != "" && data == firstCurrency {
 		err = errors.New("NOT_VALID")
 	}
 

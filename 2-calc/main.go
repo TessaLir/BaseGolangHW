@@ -63,7 +63,7 @@ func CalculateNumbers(operation string, numbers []int) float64 {
 		if numbersLength%2 != 0 {
 			result = float64(numbers[numbersLength/2])
 		} else {
-			result = float64((numbers[numbersLength/2-1] + numbers[numbersLength/2]) / 2.0)
+			result = float64(numbers[numbersLength/2-1]+numbers[numbersLength/2]) / 2.0
 		}
 	}
 	return result

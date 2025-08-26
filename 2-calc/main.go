@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -36,9 +37,6 @@ func GetNumbersForCalc() []int {
 	var numbers []int
 	fmt.Print("Введите числа разделенные запятой, с которыми необходимо выполнить поерацию: ")
 
-	// var numbersLine string
-	// fmt.Scanln(&numbersLine)
-
 	reader := bufio.NewReader(os.Stdin)
 	numbersLine, _ := reader.ReadString('\n')
 
@@ -60,11 +58,12 @@ func CalculateNumbers(operation string, numbers []int) float64 {
 			result += float64(number)
 		}
 	case "MED":
+		sort.Ints(numbers)
 		numbersLength := len(numbers)
 		if numbersLength%2 != 0 {
-			result = float64(numbers[numbersLength/2+1])
+			result = float64(numbers[numbersLength/2])
 		} else {
-			result = float64((numbers[numbersLength/2-1] + numbers[numbersLength/2]) / 2)
+			result = float64((numbers[numbersLength/2-1] + numbers[numbersLength/2]) / 2.0)
 		}
 	}
 	return result

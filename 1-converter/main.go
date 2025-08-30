@@ -6,20 +6,15 @@ import (
 	"strconv"
 )
 
-const (
-	USDtoEUR = 0.85
-	USDtoRUB = 79.78
-	EURtoUSD = 1.16
-	EURtoRUB = (USDtoRUB / USDtoEUR) * EURtoUSD
-	RUBtoEUR = 0.010671
-	RUBtoUSD = 0.012497
-)
+var currenciesMap = make(map[string]float64)
 
 var firstCurrency, secondCurrency string
 var cash int
 var err error
 
 func main() {
+
+	initCurency()
 
 	for {
 		firstCurrency, err = GetUserCurrencyData()
@@ -45,6 +40,15 @@ func main() {
 	result := calculateIMT(cash, firstCurrency, secondCurrency)
 	fmt.Printf("%.2f", result)
 
+}
+
+func initCurency() {
+	currenciesMap["USDtoEUR"] = 0.85
+	currenciesMap["USDtoRUB"] = 79.78
+	currenciesMap["EURtoUSD"] = 1.16
+	currenciesMap["EURtoRUB"] = (currenciesMap["USDtoRUB"] / currenciesMap["USDtoEUR"]) * currenciesMap["EURtoUSD"]
+	currenciesMap["RUBtoEUR"] = 0.010671
+	currenciesMap["RUBtoUSD"] = 0.012497
 }
 
 func GetUserCurrencyData() (data string, err error) {
@@ -100,22 +104,6 @@ func printLineForEnterCurrency() {
 }
 
 func calculateIMT(coin int, currencySource string, currencyTarget string) float64 {
-	var result float64
-
-	switch {
-	case currencySource == "EUR" && currencyTarget == "RUB":
-		result = float64(coin) * EURtoRUB
-	case currencySource == "EUR" && currencyTarget == "USD":
-		result = float64(coin) * EURtoUSD
-	case currencySource == "USD" && currencyTarget == "RUB":
-		result = float64(coin) * USDtoRUB
-	case currencySource == "USD" && currencyTarget == "EUR":
-		result = float64(coin) * USDtoEUR
-	case currencySource == "RUB" && currencyTarget == "USD":
-		result = float64(coin) * RUBtoUSD
-	case currencySource == "RUB" && currencyTarget == "EUR":
-		result = float64(coin) * RUBtoEUR
-	}
-
-	return result
+	var currency = fmt.Sprintf("%sto%s", currencySource, currencyTarget)
+	return float64(coin) * currenciesMap[currency]
 }

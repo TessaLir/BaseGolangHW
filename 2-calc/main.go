@@ -10,13 +10,19 @@ import (
 )
 
 func main() {
-	operation := GetOperation()
-	numbers := GetNumbersForCalc()
-	operationResult := CalculateNumbers(operation, numbers)
+	var operation string
+	GetOperation(&operation)
+
+	var numbers []int
+	GetNumbersForCalc(numbers)
+
+	var operationResult float64
+	CalculateNumbers(operation, numbers, &operationResult)
+
 	fmt.Println(operationResult)
 }
 
-func GetOperation() string {
+func GetOperation(operation *string) {
 	for {
 		fmt.Print("Введите желаемую операкию для калькулятора (AVG, SUM или MED): ")
 		var operation string
@@ -29,12 +35,10 @@ func GetOperation() string {
 			fmt.Println("Вы ввели не корректную команду.")
 			continue
 		}
-		return operation
 	}
 }
 
-func GetNumbersForCalc() []int {
-	var numbers []int
+func GetNumbersForCalc(numbers []int) {
 	fmt.Print("Введите числа разделенные запятой, с которыми необходимо выполнить поерацию: ")
 
 	reader := bufio.NewReader(os.Stdin)
@@ -44,14 +48,14 @@ func GetNumbersForCalc() []int {
 		number, _ := strconv.Atoi(strings.TrimSpace(line))
 		numbers = append(numbers, number)
 	}
-	return numbers
 }
 
-func CalculateNumbers(operation string, numbers []int) float64 {
+func CalculateNumbers(operation string, numbers []int, operationResult *float64) {
 	var result float64
 	switch operation {
 	case "AVG":
-		sum := CalculateNumbers("SUM", numbers)
+		var sum float64
+		CalculateNumbers("SUM", numbers, &sum)
 		result = float64(sum) / float64(len(numbers))
 	case "SUM":
 		for _, number := range numbers {
@@ -66,5 +70,4 @@ func CalculateNumbers(operation string, numbers []int) float64 {
 			result = float64(numbers[numbersLength/2-1]+numbers[numbersLength/2]) / 2.0
 		}
 	}
-	return result
 }
